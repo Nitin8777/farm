@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shiv Krishi Farm - Bhowapur Chamrawal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="font-sans text-gray-800">
+
+  <!-- Navbar -->
+  <header class="bg-green-700 text-white shadow-md fixed w-full top-0 z-50">
+    <div class="max-w-7xl mx-auto flex justify-between items-center p-4">
+      <!-- Logo with Name -->
+      <div class="flex items-center space-x-3">
+        <img src="./pic/Gemini-logo.png" alt="Shiv Krishi Farm Logo" class="h-10 w-10 rounded-full shadow-lg border-1 border-white">
+        <h1 class="text-lg md:text-2xl font-bold">Shiv Krishi Farm</h1>
+      </div>
+
+      <!-- Desktop Menu -->
+      <nav class="hidden md:block">
+        <ul class="flex space-x-6">
+          <li><a href="#home" class="hover:text-yellow-300">Home</a></li>
+          <li><a href="./shop.html" class="hover:text-yellow-300">Products</a></li>
+          <li><a href="#gallery" class="hover:text-yellow-300">Gallery</a></li>
+  
+
+          <li><a href="#contact" class="hover:text-yellow-300">Contact</a></li>
+        </ul>
+      </nav>
+
+      <!-- Mobile Hamburger -->
+      <button id="menu-btn" class="md:hidden flex flex-col space-y-1">
+        <span class="w-6 h-0.5 bg-white"></span>
+        <span class="w-6 h-0.5 bg-white"></span>
+        <span class="w-6 h-0.5 bg-white"></span>
+      </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <nav id="menu" class="hidden bg-green-600 md:hidden">
+      <ul class="flex flex-col text-center py-4 space-y-2">
+        <li><a href="#home" class="hover:text-yellow-300">Home</a></li>
+        <li><a href="./shop.html" class="hover:text-yellow-300">Products</a></li>
+        <li><a href="#gallery" class="hover:text-yellow-300">Gallery</a></li>
+   
+        
+        <li><a href="#contact" class="hover:text-yellow-300">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="home" class="h-screen bg-cover bg-center flex items-center justify-center text-center text-white"
+           style="background-image: url('https://paulboers.com/wp-content/uploads/2018/09/Coldframe02-768x461.jpg');">
+    <div class="bg-black bg-opacity-50 p-6 rounded-xl mx-4">
+      <img src="./pic/Gemini-logo.png" alt="Shiv Krishi Farm Logo" class="mx-auto h-24 w-24 md:h-32 md:w-32 rounded-full shadow-lg border-1 border-white">
+      <h2 class="text-3xl md:text-6xl font-bold">Fresh & Organic Vegetables</h2>
+      <p class="mt-4 text-lg">Straight from our farm to your table</p>
+      <a href="./shop.html" class="mt-6 inline-block bg-yellow-400 text-black px-6 py-3 rounded-full font-semibold hover:bg-yellow-300">Shop Now</a>
+    </div>
+  </section>
+
+ 
+
+  <!-- Gallery Section -->
+  <section id="gallery" class="py-16 bg-gray-100">
+    <div class="max-w-6xl mx-auto px-6 text-center">
+      <h3 class="text-3xl font-bold text-green-700 mb-12">Farm Gallery</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <img src="./pic/fram1.jpg" class="rounded-lg shadow-md w-full h-60 object-cover" alt="Farm 1">
+        <img src="./pic/farm2.jpg" class="rounded-lg shadow-md w-full h-60 object-cover" alt="Farm 2">
+        <img src="./pic/farm3.jpg" class="rounded-lg shadow-md w-full h-60 object-cover" alt="Farm 3">
+        <img src="./pic/fram4.jpg" class="rounded-lg shadow-md w-full h-60 object-cover" alt="Farm 3">
+        <img src="./pic/fram5.jpg" class="rounded-lg shadow-md w-full h-60 object-cover" alt="Farm 3">
+        <img src="./pic/fram6.heic" class="rounded-lg shadow-md w-full h-60 object-cover" alt="Farm 3">
+        
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="py-16 bg-gray-100">
+    <div class="max-w-6xl mx-auto px-6 text-center">
+      <h3 class="text-3xl font-bold text-green-700 mb-6">About Shiv Krishi Farm</h3>
+      <p class="text-lg text-gray-600">
+        Shiv Krishi Farm, Bhowapur Chamrawal (Haridwar, India) – established in 2024.  
+        Our mission is to provide fresh, organic vegetables with sustainable farming practices.  
+        "Jay Jawan Jay Kisan" is our motto.
+      </p>
+    </div>
+  </section>
+
+  <section id="contact" class="py-16">
+  <div class="max-w-4xl mx-auto px-6 text-center">
+    <h3 class="text-3xl font-bold text-green-700 mb-6">Contact Us</h3>
+    <p class="text-gray-600 mb-6">📍 Bhowapur Chamrawal, Haridwar, India | 📞 +91 9012865634 | ✉️ shivkrishifarm@gmail.com</p>
+    
+
+    <!-- Google Map -->
+    <div class="rounded-lg overflow-hidden shadow-md">
+      <iframe 
+        src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3463.389811019221!2d78.1225190753797!3d29.766367975064806!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMjnCsDQ1JzU4LjkiTiA3OMKwMDcnMzAuMyJF!5e0!3m2!1sen!2sin!4v1759746604763!5m2!1sen!2sin"
+        width="100%" 
+        height="300" 
+        style="border:0;" 
+        allowfullscreen="" 
+        loading="lazy" 
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+  
+
+  <!-- Footer -->
+  <footer class="bg-green-700 text-white text-center py-6">
+    © 2025 Shiv Krishi Farm Bhowapur Chamrawal. All rights reserved.
+  </footer>
+
+  <!-- Mobile Menu Toggle Script -->
+  <script>
+    const menuBtn = document.getElementById("menu-btn");
+    const menu = document.getElementById("menu");
+
+    menuBtn.addEventListener("click", () => {
+      menu.classList.toggle("hidden");
+    });
+  </script>
+</body>
+</html>
+
+
+    
