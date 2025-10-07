@@ -6,7 +6,7 @@
 
 ## 🌟 About Project
 
-**Shiv Krishi Farm is a full-stack web application that directly connects farmers and consumers. The platform makes it easy to showcase and sell fresh, organic vegetables..  
+Shiv Krishi Farm is a full-stack web application that directly connects farmers and consumers. The platform makes it easy to showcase and sell fresh, organic vegetables..  
 
 **Key Highlights:**
 - Attractive UI with modern design  
