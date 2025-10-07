@@ -5,136 +5,175 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Shiv Krishi Farm - Bhowapur Chamrawal</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Preloader animation */
+    #preloader {
+      position: fixed;
+      top:0;
+      left:0;
+      width:100%;
+      height:100%;
+      background-color: #3fea297c;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      z-index:9999;
+      flex-direction:column;
+    }
+    .spinner {
+      border: 6px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 1s linear infinite;
+      margin-bottom: 15px;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg);}
+      100% { transform: rotate(360deg);}
+    }
+
+    /* Scroll animation */
+    .animate-on-scroll {
+      opacity: 0;
+      transform: translateY(50px);
+      transition: all 0.8s ease-out;
+    }
+    .animate-on-scroll.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
 </head>
-<body class="font-sans text-gray-800">
+<body class="font-sans text-gray-800 bg-gradient-to-b from-green-50 via-green-100 to-green-50">
+
+  <!-- Preloader -->
+  <div id="preloader">
+    <div class="spinner"></div>
+    <p class="text-white font-bold text-lg">Shiv Krishi Farm</p>
+  </div>
 
   <!-- Navbar -->
-  <header class="bg-green-700 text-white shadow-md fixed w-full top-0 z-50">
-    <div class="max-w-7xl mx-auto flex justify-between items-center p-4">
-      <!-- Logo with Name -->
-      <div class="flex items-center space-x-3">
-        <img src="./pic/Gemini-logo.png" alt="Shiv Krishi Farm Logo" class="h-10 w-10 rounded-full shadow-lg border-1 border-white">
-        <h1 class="text-lg md:text-2xl font-bold">Shiv Krishi Farm</h1>
-      </div>
-
-      <!-- Desktop Menu -->
-      <nav class="hidden md:block">
-        <ul class="flex space-x-6">
-          <li><a href="#home" class="hover:text-yellow-300">Home</a></li>
-          <li><a href="./shop.html" class="hover:text-yellow-300">Products</a></li>
-          <li><a href="#gallery" class="hover:text-yellow-300">Gallery</a></li>
-  
-
-          <li><a href="#contact" class="hover:text-yellow-300">Contact</a></li>
-        </ul>
-      </nav>
-
-      <!-- Mobile Hamburger -->
-      <button id="menu-btn" class="md:hidden flex flex-col space-y-1">
-        <span class="w-6 h-0.5 bg-white"></span>
-        <span class="w-6 h-0.5 bg-white"></span>
-        <span class="w-6 h-0.5 bg-white"></span>
-      </button>
+  <header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 md:px-24 py-4 bg-green-600/30 backdrop-blur-md transition-all shadow-md">
+    
+    <!-- Logo -->
+    <div class="flex items-center space-x-3">
+      <img src="./pic/Gemini-logo.png" alt="Shiv Krishi Farm Logo" class="h-10 w-10 rounded-full shadow-lg ">
+      <h1 class="text-xl md:text-2xl font-extrabold tracking-wide text-white">Shiv Krishi Farm</h1>
     </div>
 
-    <!-- Mobile Menu -->
-    <nav id="menu" class="hidden bg-green-600 md:hidden">
-      <ul class="flex flex-col text-center py-4 space-y-2">
-        <li><a href="#home" class="hover:text-yellow-300">Home</a></li>
-        <li><a href="./shop.html" class="hover:text-yellow-300">Products</a></li>
-        <li><a href="#gallery" class="hover:text-yellow-300">Gallery</a></li>
-   
-        
-        <li><a href="#contact" class="hover:text-yellow-300">Contact</a></li>
-      </ul>
-    </nav>
+    <!-- Desktop Menu -->
+    <ul class="hidden md:flex gap-12">
+      <li><a href="#home" class="text-white text-sm hover:border-b-4 hover:border-yellow-400 transition-all">Home</a></li>
+      <li><a href="./shop.html" class="text-white text-sm hover:border-b-4 hover:border-yellow-400 transition-all">Products</a></li>
+      <li><a href="#gallery" class="text-white text-sm hover:border-b-4 hover:border-yellow-400 transition-all">Gallery</a></li>
+      <li><a href="#about" class="text-white text-sm hover:border-b-4 hover:border-yellow-400 transition-all">About</a></li>
+      <li><a href="#contact" class="text-white text-sm hover:border-b-4 hover:border-yellow-400 transition-all">Contact</a></li>
+    </ul>
+
+    <!-- Sign Up Button -->
+    <a href="./shop.html" class="hidden md:inline-block bg-yellow-400 text-white px-6 py-2 rounded-2xl font-semibold transition-all hover:bg-transparent hover:text-yellow-400 transform hover:scale-110">
+      Shop Now
+    </a>
+
+    <!-- Mobile Menu Button -->
+    <button id="menu-btn" class="md:hidden text-white text-2xl">☰</button>
   </header>
 
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="hidden fixed top-0 left-0 w-full h-screen bg-green-700/90 backdrop-blur-md flex flex-col items-center justify-center space-y-6 md:hidden z-40">
+    <a href="#home" class="text-white text-2xl hover:text-yellow-400 transition">Home</a>
+    <a href="./shop.html" class="text-white text-2xl hover:text-yellow-400 transition">Products</a>
+    <a href="#gallery" class="text-white text-2xl hover:text-yellow-400 transition">Gallery</a>
+    <a href="#about" class="text-white text-2xl hover:text-yellow-400 transition">About</a>
+    <a href="#contact" class="text-white text-2xl hover:text-yellow-400 transition">Contact</a>
+    <a href="./shop.html" class="bg-yellow-400 text-white px-6 py-3 rounded-2xl font-semibold hover:bg-transparent hover:text-yellow-400 transition">Shop Now</a>
+  </div>
+
   <!-- Hero Section -->
-   
-  <section id="home" class="h-screen bg-cover bg-center flex items-center justify-center text-center text-white"
+  <section id="home" class="h-screen bg-cover bg-center flex items-center justify-center text-center text-white relative animate-on-scroll"
            style="background-image: url('https://paulboers.com/wp-content/uploads/2018/09/Coldframe02-768x461.jpg');">
-    <div class="bg-white/10 backdrop-blur-md rounded-2xl p-10  shadow-lg shadow-black/40 text-center relative">
-      <img src="./pic/Gemini-logo.png" alt="Shiv Krishi Farm Logo" class="mx-auto h-24 w-24 md:h-32 md:w-32 rounded-full shadow-lg border-1 border-white">
-      <h2 class="text-3xl md:text-6xl font-bold">Fresh & Organic Vegetables</h2>
-      <p class="mt-4 text-lg">Straight from our farm to your table</p>
-      <a href="./shop.html" class="mt-6 inline-block bg-yellow-400 text-black px-6 py-3 rounded-full font-semibold hover:bg-yellow-300">Shop Now</a>
+    <div class="bg-black/30 absolute inset-0"></div>
+    <div class="relative z-10 bg-gradient-to-tr from-yellow-200/30 via-green-200/30 to-yellow-300/20 backdrop-blur-md rounded-3xl p-10 md:p-16 shadow-2xl max-w-2xl">
+      <img src="./pic/Gemini-logo.png" alt="Shiv Krishi Farm Logo" class="mx-auto h-24 w-24 md:h-32 md:w-32 rounded-full shadow-xl  mb-6">
+      <h2 class="text-4xl md:text-6xl font-extrabold drop-shadow-lg text-yellow-300">Fresh & Organic Vegetables</h2>
+      <p class="mt-4 text-lg md:text-xl text-green-900 font-semibold">Straight from our farm to your table</p>
+      <a href="./shop.html" class="mt-6 inline-block bg-gradient-to-r from-yellow-400 via-yellow-500 to-orange-400 text-black px-8 py-3 rounded-full font-bold hover:scale-105 transform transition shadow-lg">Shop Now</a>
     </div>
   </section>
 
- 
-
   <!-- Gallery Section -->
-  <section id="gallery" class="py-16 bg-gray-100">
+  <section id="gallery" class="py-20 bg-gradient-to-b from-yellow-50 via-green-50 to-yellow-50">
     <div class="max-w-6xl mx-auto px-6 text-center">
-      <h3 class="text-3xl font-bold text-green-700 mb-12">Farm Gallery</h3>
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        <img src="./pic/fram1.jpg" class="rounded-lg shadow-md w-full h-60 object-cover" alt="Farm 1">
-        <img src="./pic/farm2.jpg" class="rounded-lg shadow-md w-full h-60 object-cover" alt="Farm 2">
-        <img src="./pic/farm3.jpg" class="rounded-lg shadow-md w-full h-60 object-cover" alt="Farm 3">
-        <img src="./pic/fram4.jpg" class="rounded-lg shadow-md w-full h-60 object-cover" alt="Farm 3">
-        <img src="./pic/fram5.jpg" class="rounded-lg shadow-md w-full h-60 object-cover" alt="Farm 3">
-        <img src="./pic/fram6.heic" class="rounded-lg shadow-md w-full h-60 object-cover" alt="Farm 3">
-        
+      <h3 class="text-3xl font-extrabold text-green-700 mb-12 animate-on-scroll">Farm Gallery</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+        <img src="./pic/fram1.jpg" class="rounded-2xl shadow-lg w-full h-60 object-cover hover:scale-105 transition-transform duration-300 animate-on-scroll" alt="Farm 1">
+        <img src="./pic/farm2.jpg" class="rounded-2xl shadow-lg w-full h-60 object-cover hover:scale-105 transition-transform duration-300 animate-on-scroll" alt="Farm 2">
+        <img src="./pic/farm3.jpg" class="rounded-2xl shadow-lg w-full h-60 object-cover hover:scale-105 transition-transform duration-300 animate-on-scroll" alt="Farm 3">
+        <img src="./pic/fram4.jpg" class="rounded-2xl shadow-lg w-full h-60 object-cover hover:scale-105 transition-transform duration-300 animate-on-scroll" alt="Farm 4">
+        <img src="./pic/fram5.jpg" class="rounded-2xl shadow-lg w-full h-60 object-cover hover:scale-105 transition-transform duration-300 animate-on-scroll" alt="Farm 5">
+        <img src="./pic/fram6.heic" class="rounded-2xl shadow-lg w-full h-60 object-cover hover:scale-105 transition-transform duration-300 animate-on-scroll" alt="Farm 6">
       </div>
     </div>
   </section>
 
   <!-- About Section -->
-  <section id="about" class="py-16 bg-gray-100">
-    <div class="max-w-6xl mx-auto px-6 text-center">
-      <h3 class="text-3xl font-bold text-green-700 mb-6">About Shiv Krishi Farm</h3>
-      <p class="text-lg text-gray-600">
+  <section id="about" class="py-20 bg-gradient-to-tr from-green-50 via-yellow-50 to-green-50 animate-on-scroll">
+    <div class="max-w-5xl mx-auto px-6 text-center">
+      <h3 class="text-3xl font-extrabold text-green-800 mb-6">About Shiv Krishi Farm</h3>
+      <p class="text-lg text-green-900 leading-relaxed">
         Shiv Krishi Farm, Bhowapur Chamrawal (Haridwar, India) – established in 2024.  
         Our mission is to provide fresh, organic vegetables with sustainable farming practices.  
-        "Jay Jawan Jay Kisan" is our motto.
+        <span class="font-semibold italic text-orange-500">"Jay Jawan Jay Kisan"</span> is our motto.
       </p>
     </div>
   </section>
 
-  <section id="contact" class="py-16">
-  <div class="max-w-4xl mx-auto px-6 text-center">
-    <h3 class="text-3xl font-bold text-green-700 mb-6">Contact Us</h3>
-    <p class="text-gray-600 mb-6">📍 Bhowapur Chamrawal, Haridwar, India | 📞 +91 9012865634 | ✉️ shivkrishifarm@gmail.com</p>
-    
+  <!-- Contact Section -->
+  <section id="contact" class="py-20 bg-gradient-to-b from-yellow-50 via-green-50 to-yellow-50 animate-on-scroll">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <h3 class="text-3xl font-extrabold text-green-700 mb-6">Contact Us</h3>
+      <p class="text-gray-700 mb-8 text-lg">📍 Bhowapur Chamrawal, Haridwar, India <br> 📞 +91 9012865634 <br> ✉️ shivkrishifarm@gmail.com</p>
 
-    <!-- Google Map -->
-    <div class="rounded-lg overflow-hidden shadow-md">
-      <iframe 
-        src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3463.389811019221!2d78.1225190753797!3d29.766367975064806!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMjnCsDQ1JzU4LjkiTiA3OMKwMDcnMzAuMyJF!5e0!3m2!1sen!2sin!4v1759746604763!5m2!1sen!2sin"
-        width="100%" 
-        height="300" 
-        style="border:0;" 
-        allowfullscreen="" 
-        loading="lazy" 
-        referrerpolicy="no-referrer-when-downgrade">
-      </iframe>
+      <div class="rounded-2xl overflow-hidden shadow-lg border border-gray-200">
+        <iframe 
+          src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d500.57565115374547!2d78.12471902881167!3d29.76670536788716!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39095b0039778649%3A0x8e0c82779749c27c!2sShiv%20Krishi%20Farm!5e0!3m2!1sen!2sin!4v1759810162627!5m2!1sen!2sin"
+          width="100%" height="350" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
     </div>
-  </div>
-</section>
-
-
-
-
-
-  
+  </section>
 
   <!-- Footer -->
-  <footer class="bg-green-700 text-white text-center py-6">
-    © 2025 Shiv Krishi Farm Bhowapur Chamrawal. All rights reserved.
+  <footer class="bg-gradient-to-r from-green-600 to-green-700 text-white text-center py-6 mt-10 shadow-inner">
+    <p class="text-sm">© 2025 Shiv Krishi Farm, Bhowapur Chamrawal. All rights reserved.</p>
   </footer>
 
-  <!-- Mobile Menu Toggle Script -->
+  <!-- Scripts -->
   <script>
-    const menuBtn = document.getElementById("menu-btn");
-    const menu = document.getElementById("menu");
-
-    menuBtn.addEventListener("click", () => {
-      menu.classList.toggle("hidden");
+    // Preloader hide after load
+    window.addEventListener("load", () => {
+      document.getElementById("preloader").style.display = "none";
     });
+
+    // Mobile menu toggle
+    const menuBtn = document.getElementById("menu-btn");
+    const mobileMenu = document.getElementById("mobile-menu");
+    menuBtn.addEventListener("click", () => {
+      mobileMenu.classList.toggle("hidden");
+    });
+
+    // Scroll animation
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          entry.target.classList.add('show');
+        }
+      });
+    }, { threshold: 0.2 });
+
+    document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
   </script>
 </body>
 </html>
-
-
-    
