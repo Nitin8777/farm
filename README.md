@@ -1,1 +1,10 @@
-# farm
+farm/
+├── backend/
+│   ├── server.js          # Express server setup
+│ 
+├── frontend/
+│   ├── index.html         # Home page
+│   ├── shop.html          # Products page
+│   └── pic/               # Images folder
+├── README.md
+
