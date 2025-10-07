@@ -5,29 +5,58 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Shiv Krishi Farm</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Loader transition */
+    #loader { transition: opacity 0.5s ease; }
+    .hidden { opacity: 0; pointer-events: none; }
+
+    /* Sliding bottom message */
+    #msgBox {
+      @apply fixed left-1/2 transform -translate-x-1/2 px-6 py-3 rounded-lg font-bold text-white z-50 opacity-0 bottom-[-80px] transition-all duration-500;
+    }
+    #msgBox.show {
+      bottom: 30px;
+      opacity: 1;
+    }
+
+    /* Product card hover effect */
+    .product-card:hover {
+      @apply scale-105 shadow-xl transition-transform duration-300;
+    }
+
+    /* Cart button hover */
+    .cart-btn:hover {
+      @apply bg-green-600 transition-colors duration-300;
+    }
+
+    /* Input focus */
+    input:focus, textarea:focus {
+      @apply outline-none ring-2 ring-green-500;
+    }
+  </style>
 </head>
-<body class="bg-green-50 text-gray-800">
+<body class="bg-green-50 text-gray-800 pt-20">
 
   <!-- Navbar -->
-  <nav class="bg-green-700 text-white p-4 flex justify-between items-center shadow-lg">
+  <nav class="bg-green-700 text-white p-4 flex justify-between items-center shadow-lg fixed w-full z-50 top-0">
     <div class="flex items-center space-x-3">
-      <img src="./pic/Gemini-logo.png" alt="Farm Logo" class="h-12 w-12 rounded-full ">
-      <h1 class="text-xl font-bold">Shiv Krishi Farm</h1>
+      <img src="./pic/Gemini-logo.png" alt="Farm Logo" class="h-12 w-12 rounded-full shadow-md">
+      <h1 class="text-xl font-bold tracking-wide">Shiv Krishi Farm</h1>
     </div>
-    <button onclick="toggleCart()" class="bg-yellow-400 text-black px-4 py-2 rounded-lg font-semibold">
+    <button onclick="toggleCart()" class="bg-yellow-400 text-black px-4 py-2 rounded-lg font-semibold hover:bg-yellow-300 transition-colors shadow-md">
       🛒 Cart (<span id="cartCount">0</span>)
     </button>
   </nav>
 
   <!-- Hero Section -->
-  <header class="text-center py-10 bg-gradient-to-r from-green-200 to-green-400">
-    <h2 class="text-3xl font-bold">🌱 Welcome to Shiv Krishi Farm</h2>
-    <p class="mt-2 text-lg">Fresh Vegetables Direct from Our Fields</p>
+  <header class="text-center py-24 bg-gradient-to-r from-green-200 via-green-300 to-green-400 px-4 sm:px-6 md:px-12 rounded-b-3xl shadow-lg">
+    <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold tracking-wide">🌱 Welcome to Shiv Krishi Farm</h2>
+    <p class="mt-2 text-lg sm:text-xl md:text-2xl text-gray-700">Fresh Vegetables Direct from Our Fields</p>
   </header>
 
   <!-- Loader -->
   <div id="loader" class="flex justify-center items-center py-10">
-    <div class="w-12 h-12 border-4 border-blue-700 border-dashed rounded-full animate-spin"></div>
+    <div class="w-12 h-12 border-4 border-green-700 border-dashed rounded-full animate-spin"></div>
   </div>
 
   <!-- Error Message -->
@@ -36,10 +65,10 @@
   </div>
 
   <!-- Product Section -->
-  <section id="productSection" class="hidden p-6 grid md:grid-cols-3 gap-6"></section>
+  <section id="productSection" class="hidden p-4 sm:p-6 grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"></section>
 
   <!-- Cart Section -->
-  <div id="cartBox" class="hidden fixed right-5 top-20 bg-white p-6 shadow-xl rounded-lg w-96">
+  <div id="cartBox" class="hidden fixed right-2 sm:right-5 top-20 bg-white p-6 shadow-xl rounded-lg w-72 sm:w-96 max-h-[75vh] overflow-y-auto">
     <h2 class="text-xl font-bold mb-4">🛒 Your Cart</h2>
     <ul id="cartItems" class="space-y-2"></ul>
     <p class="font-bold mt-4">Total: ₹<span id="cartTotal">0</span></p>
@@ -47,20 +76,37 @@
     <!-- Checkout Form -->
     <h4 class="mt-6 text-xl font-bold">Checkout</h4>
     <form id="checkoutForm" class="mt-3 space-y-3">
-      <input id="custName" type="text" placeholder="Your Name" class="w-full p-2 border rounded" required>
-      <input id="custPhone" type="text" placeholder="Phone Number" class="w-full p-2 border rounded" required>
-      <textarea id="custAddress" placeholder="Delivery Address" class="w-full p-2 border rounded" required></textarea>
-      <button type="button" onclick="sendToWhatsApp()" class="bg-green-700 text-white px-4 py-2 rounded-lg w-full">
+      <input id="custName" type="text" placeholder="Your Name" class="w-full p-2 border border-gray-300 rounded-lg">
+      <input id="custPhone" type="text" placeholder="Phone Number" class="w-full p-2 border border-gray-300 rounded-lg">
+      <textarea id="custAddress" placeholder="Delivery Address" class="w-full p-2 border border-gray-300 rounded-lg"></textarea>
+      <button type="button" onclick="sendToWhatsApp()" class="cart-btn bg-green-700 text-white px-4 py-2 rounded-lg w-full shadow-md">
         Proceed via WhatsApp
       </button>
     </form>
   </div>
 
+  <!-- Sliding Message Box -->
+  <div id="msgBox"></div>
+
 <script>
 const API = "https://farm-ody6.onrender.com/api/products";
 let cart = [];
 
-// ----- Fetch products from backend -----
+// ----- Persistent Cart -----
+function saveCart() { localStorage.setItem("cart", JSON.stringify(cart)); }
+function loadCart() { let savedCart = localStorage.getItem("cart"); if(savedCart) cart = JSON.parse(savedCart); updateCartCount(); }
+
+// ----- Sliding Message -----
+function showMessage(text, type="success") {
+  const msgBox = document.getElementById("msgBox");
+  msgBox.innerText = text;
+  msgBox.className = "show fixed left-1/2 transform -translate-x-1/2 px-6 py-3 rounded-lg font-bold text-white z-50 transition-all duration-500";
+  if(type === "success") msgBox.classList.add("bg-green-500");
+  if(type === "error") msgBox.classList.add("bg-red-500");
+  setTimeout(() => { msgBox.classList.remove("show", "bg-green-500", "bg-red-500"); }, 3000);
+}
+
+// ----- Fetch products -----
 async function loadProducts() {
   const loader = document.getElementById("loader");
   const errorBox = document.getElementById("errorBox");
@@ -69,28 +115,24 @@ async function loadProducts() {
   try {
     const res = await fetch(API);
     if (!res.ok) throw new Error("Network response was not ok");
-
     const products = await res.json();
     
-    // Hide loader, show section
     loader.classList.add("hidden");
     section.classList.remove("hidden");
-
     section.innerHTML = "";
+
     products.forEach(product => {
       section.innerHTML += `
-        <div class="bg-white shadow-md p-4 rounded-lg text-center">
-          <img src="${product.image}" class="h-24 mx-auto" alt="${product.name}">
-          <h3 class="font-bold text-lg mt-2">${product.name}</h3>
+        <div class="product-card bg-white shadow-md p-4 rounded-lg text-center">
+          <img src="${product.image}" class="h-24 mx-auto rounded-md" alt="${product.name}">
+          <h3 class="font-bold text-lg mt-2 text-green-800">${product.name}</h3>
           <p class="text-gray-600">₹${product.price} / Kg</p>
-
           <div class="flex justify-center items-center mt-2 space-x-2">
-            <button onclick="decreaseQty('${product._id}')" class="bg-red-500 text-white px-2 rounded">-</button>
+            <button onclick="decreaseQty('${product._id}')" class="bg-red-500 text-white px-2 rounded hover:bg-red-600 transition-colors">-</button>
             <input id="${product._id}Qty" type="number" value="1" min="1" class="w-12 text-center border rounded">
-            <button onclick="increaseQty('${product._id}')" class="bg-green-500 text-white px-2 rounded">+</button>
+            <button onclick="increaseQty('${product._id}')" class="bg-green-500 text-white px-2 rounded hover:bg-green-600 transition-colors">+</button>
           </div>
-
-          <button onclick="addToCart('${product.name}', ${product.price}, '${product._id}Qty')" class="mt-3 bg-green-700 text-white px-4 py-2 rounded-lg">
+          <button onclick="addToCart('${product.name}', ${product.price}, '${product._id}')" class="mt-3 bg-green-700 text-white px-4 py-2 rounded-lg w-full hover:bg-green-600 transition-colors shadow-md">
             Add to Cart
           </button>
         </div>
@@ -103,30 +145,17 @@ async function loadProducts() {
   }
 }
 
-// ----- Quantity functions -----
-function increaseQty(id) {
-  let input = document.getElementById(id);
-  input.value = parseInt(input.value) + 1;
-}
+// ----- Quantity Controls -----
+function increaseQty(id) { let input = document.getElementById(id + "Qty"); input.value = parseInt(input.value) + 1; }
+function decreaseQty(id) { let input = document.getElementById(id + "Qty"); if(parseInt(input.value) > 1) input.value = parseInt(input.value) - 1; }
 
-function decreaseQty(id) {
-  let input = document.getElementById(id);
-  if(parseInt(input.value) > 1) input.value = parseInt(input.value) - 1;
-}
-
-// ----- Cart functions -----
-function addToCart(name, price, qtyId) {
-  let qty = parseInt(document.getElementById(qtyId).value);
+// ----- Cart Functions -----
+function addToCart(name, price, id) {
+  let qty = parseInt(document.getElementById(id + "Qty").value);
   let existing = cart.find(item => item.name === name);
-
-  if(existing){
-    existing.qty += qty;
-  } else {
-    cart.push({ name, price, qty });
-  }
-
-  updateCartCount();
-  alert(`${qty} Kg ${name} added to cart!`);
+  if(existing) existing.qty += qty; else cart.push({ name, price, qty });
+  updateCartCount(); saveCart();
+  showMessage(`${qty} Kg ${name} added to cart!`, "success");
 }
 
 function updateCartCount() {
@@ -134,82 +163,73 @@ function updateCartCount() {
   document.getElementById("cartCount").innerText = totalQty;
 }
 
-function toggleCart() {
-  document.getElementById("cartBox").classList.toggle("hidden");
-  displayCart();
-}
+function toggleCart() { document.getElementById("cartBox").classList.toggle("hidden"); displayCart(); }
 
 function displayCart() {
-  let cartItems = document.getElementById("cartItems");
-  cartItems.innerHTML = "";
-  let total = 0;
-
-  if(cart.length === 0){
-    cartItems.innerHTML = "<li>Your cart is empty</li>";
-    document.getElementById("cartTotal").innerText = 0;
-    return;
-  }
-
-  cart.forEach((item, index) => {
-    let itemTotal = item.price * item.qty;
-    total += itemTotal;
-    cartItems.innerHTML += `
-      <li class="flex justify-between items-center border-b pb-1">
-        <span>${index+1}. ${item.name} - ${item.qty} Kg = ₹${itemTotal}</span>
-        <button onclick="removeFromCart(${index})" class="bg-red-500 text-white px-2 py-1 rounded ml-2 hover:bg-red-600">Delete</button>
-      </li>
-    `;
+  let cartItems = document.getElementById("cartItems"); cartItems.innerHTML = ""; let total = 0;
+  if(cart.length === 0){ cartItems.innerHTML = "<li>Your cart is empty</li>"; document.getElementById("cartTotal").innerText = 0; return; }
+  cart.forEach((item,index) => {
+    let itemTotal = item.price*item.qty; total+=itemTotal;
+    cartItems.innerHTML += `<li class="flex justify-between items-center border-b pb-1"><span>${index+1}. ${item.name} - ${item.qty} Kg = ₹${itemTotal}</span><button onclick="removeFromCart(${index})" class="bg-red-500 text-white px-2 py-1 rounded ml-2 hover:bg-red-600 transition-colors">Delete</button></li>`;
   });
-
   document.getElementById("cartTotal").innerText = total;
 }
 
-function removeFromCart(index) {
-  cart.splice(index,1);
-  updateCartCount();
-  displayCart();
-}
+function removeFromCart(index) { cart.splice(index,1); updateCartCount(); displayCart(); saveCart(); }
 
+// ----- WhatsApp Checkout -----
 function sendToWhatsApp() {
-  let name = document.getElementById("custName").value;
-  let phone = document.getElementById("custPhone").value;
-  let address = document.getElementById("custAddress").value;
+  let name = document.getElementById("custName").value.trim();
+  let phone = document.getElementById("custPhone").value.trim();
+  let address = document.getElementById("custAddress").value.trim();
 
-  if (!name || !phone || !address) {
-    alert("⚠️ Please fill all details before proceeding.");
+  if(!name || !phone || !address) {
+    showMessage("⚠️ Please fill all details before proceeding.","error");
+    return;
+  }
+  if(!/^\d{10}$/.test(phone)) {
+    showMessage("⚠️ Please enter a valid 10-digit phone number.","error");
+    return;
+  }
+  if(cart.length === 0) {
+    showMessage("⚠️ Your cart is empty!","error");
     return;
   }
 
-  if (!cart || cart.length === 0) {
-    alert("⚠️ Your cart is empty!");
-    return;
-  }
-
-  // Build message using %0A for line breaks
-  let orderDetails = "🛒 *New Order from Shiv Krishi Farm*%0A%0A";
-  orderDetails += `*Customer Name:* ${name}%0A`;
-  orderDetails += `*Phone:* ${phone}%0A`;
-  orderDetails += `*Address:* ${address}%0A%0A`;
-  orderDetails += "📦 *Order Items:*%0A";
+  // Construct message line by line
+  let lines = [];
+  lines.push("🛒 *New Order from Shiv Krishi Farm*");
+  lines.push("");
+  lines.push(`*Customer Name:* ${name}`);
+  lines.push(`*Phone:* ${phone}`);
+  lines.push(`*Address:* ${address}`);
+  lines.push("");
+  lines.push("📦 *Order Items:*");
 
   let total = 0;
   cart.forEach((item, index) => {
     let itemTotal = item.price * item.qty;
-    orderDetails += `_${index + 1}._ *${item.name}* - ${item.qty} Kg = ₹${itemTotal}%0A`;
     total += itemTotal;
+    lines.push(`${index+1}. ${item.name} - ${item.qty} Kg = ₹${itemTotal}`);
   });
 
-  orderDetails += `%0A💰 *Total:* ₹${total}`;
+  lines.push("");
+  lines.push(`💰 *Total:* ₹${total}`);
 
-  // WhatsApp link
-  let whatsappNumber = "919627938726"; // Your number
+  // Join lines with \n and encode
+  let orderDetails = encodeURIComponent(lines.join("\n"));
+
+  let whatsappNumber = "919627938726"; 
   let url = `https://wa.me/${whatsappNumber}?text=${orderDetails}`;
-  
   window.open(url, "_blank");
 }
 
-// ----- Load products on page load -----
-loadProducts();
+
+
+
+
+// ----- Initialize -----
+window.onload=()=>{ loadCart(); loadProducts(); }
 </script>
 
 </body>
