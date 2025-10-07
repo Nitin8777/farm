@@ -47,7 +47,7 @@
   </div>
 
 <script>
-const API = "http://localhost:3000/api/products";
+const API = "https://farm-ody6.onrender.com/api/products";
 let cart = [];
 
 // ----- Fetch products from backend -----
@@ -145,40 +145,47 @@ function removeFromCart(index) {
   displayCart();
 }
 
-// ----- WhatsApp order -----
 function sendToWhatsApp() {
   let name = document.getElementById("custName").value;
   let phone = document.getElementById("custPhone").value;
   let address = document.getElementById("custAddress").value;
 
-  if(!name || !phone || !address){
+  if (!name || !phone || !address) {
     alert("⚠️ Please fill all details before proceeding.");
     return;
   }
-  if(cart.length === 0){
+
+  if (!cart || cart.length === 0) {
     alert("⚠️ Your cart is empty!");
     return;
   }
 
+  // Build message using %0A for line breaks
   let orderDetails = "🛒 *New Order from Shiv Krishi Farm*%0A%0A";
   orderDetails += `*Customer Name:* ${name}%0A`;
   orderDetails += `*Phone:* ${phone}%0A`;
   orderDetails += `*Address:* ${address}%0A%0A`;
   orderDetails += "📦 *Order Items:*%0A";
 
+  let order = ["🛒 *New Order from Shiv Krishi Farm*%0A%0A",]
+
   let total = 0;
   cart.forEach((item, index) => {
     let itemTotal = item.price * item.qty;
-    orderDetails += `${index+1}. ${item.name} - ${item.qty} Kg = ₹${itemTotal}%0A`;
+    orderDetails += `_${index + 1}._ *${item.name}* - ${item.qty} Kg = ₹${itemTotal}%0A`;
     total += itemTotal;
   });
 
   orderDetails += `%0A💰 *Total:* ₹${total}`;
 
+  // WhatsApp link
   let whatsappNumber = "919627938726"; // Your number
-  let url = "https://wa.me/" + whatsappNumber + "?text=" + encodeURIComponent(orderDetails);
+  let url = `https://wa.me/${whatsappNumber}?text=${orderDetails}`;
+  
   window.open(url, "_blank");
 }
+
+
 
 // ----- Load products on page load -----
 loadProducts();
